@@ -1,0 +1,13 @@
+{{! 相关文章推荐  post_relative limit="2"  }}
+<div class="more-post">
+	{{#each relatePosts}}
+    <div class="more-left">
+        <p class="p-banner">{{title}}</p>
+        <div class="info">
+
+	         <time class="post-time">{{date format="MMM DD YYYY HH:mm:ss"}}</time></span>
+
+        </div>
+    </div>
+{{/each}}
+</div>

@@ -92,7 +92,34 @@ posts = {
 
         });
     },
+    findRelate: function read(options) {
+        var attrs = ['id', 'slug', 'status','post_type'],
+            data = _.pick(options, attrs);
+        options = _.omit(options, attrs);
 
+        // only published posts if no user is present
+        if (!(options.context && options.context.user)) {
+            data.status = 'published';
+        }
+
+        if (options.include) {
+            options.include = prepareInclude(options.include);
+        }
+        return dataProvider.Post.findRelate(data, options).then(function (result) {
+            if (result) {
+                var data = _.filter(result.toJSON(),function(post){ //排除掉自己
+                    return post.title !== options.title;
+                });
+                var size = data.length - options.limit;
+
+                if( size > -1 ){  //返回指定数量的数据
+                    data.pop();
+                }
+                return {relatePosts:data};
+            }
+            return when.reject(new errors.NotFoundError('Post not found.'));
+        });
+    },
     /**
      * ### Edit
      * Update properties of a post

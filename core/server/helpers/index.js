@@ -158,6 +158,21 @@ coreHelpers.url = function (options) {
 
     return when(config.urlFor(this, absolute));
 };
+coreHelpers.post_relative  = function(options){
+        var option = (options || {}).hash || {};
+        var data = {
+            title : this.title,
+            limit : parseInt(option.limit)+1
+
+        };
+        return api.posts.findRelate(data).then(function(posts){
+            console.log(posts);
+            return template.execute('relative_post', posts);
+        });
+
+};
+
+
 
 // ### Asset helper
 //
@@ -875,6 +890,11 @@ registerHelpers = function (adminHbs, assetHash) {
     registerAsyncThemeHelper('post_class', coreHelpers.post_class);
 
     registerAsyncThemeHelper('url', coreHelpers.url);
+    //add by liuxing
+
+    registerAsyncThemeHelper('post_relative', coreHelpers.post_relative);
+
+    //end add
 
 
     // Register admin helpers
